@@ -1,5 +1,4 @@
 target/*
-!target/metro-maven-8.0.0-SNAPSHOT.jar
 logs/
 src/test/
 .idea/
