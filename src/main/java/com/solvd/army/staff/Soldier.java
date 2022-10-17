@@ -1,16 +1,22 @@
 package com.solvd.army.staff;
 
+import com.solvd.army.equipment.Reward;
 import com.solvd.army.weapon.HeavyWeapon;
 import com.solvd.army.weapon.SmallArm;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class Soldier  extends Human{
 
     private long id;
     private SmallArm rifle;
     private HeavyWeapon heavyWeapon;
+    private LocalDate demobilization;
+    private List<Reward> rewards;
 
-    public Soldier(String firstName, String lastName, int age, int militaryBadge){
-        super(firstName, lastName, age, militaryBadge);
+    public Soldier(String firstName, String lastName, int militaryBadge){
+        super(firstName, lastName, militaryBadge);
     }
 
     public long getId() {
@@ -35,5 +41,21 @@ public class Soldier  extends Human{
 
     public void setHeavyWeapon(HeavyWeapon heavyWeapon) {
         this.heavyWeapon = heavyWeapon;
+    }
+
+    public LocalDate getDemobilization() {
+        return demobilization;
+    }
+
+    public void setDemobilization(LocalDate demobilization) {
+        this.demobilization = demobilization;
+    }
+
+    public List<Reward> getRewards() {
+        return rewards;
+    }
+
+    public void setRewards(List<Reward> rewards) {
+        this.rewards = rewards;
     }
 }

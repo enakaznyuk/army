@@ -10,8 +10,8 @@ public class Officer extends Human {
     private SmallArm rifle;
     private List<Soldier> battalion;
 
-    public Officer(String firstName, String lastName, int age, int militaryBadge) {
-        super(firstName, lastName, age, militaryBadge);
+    public Officer(String firstName, String lastName, int militaryBadge) {
+        super(firstName, lastName, militaryBadge);
     }
 
     public long getId() {

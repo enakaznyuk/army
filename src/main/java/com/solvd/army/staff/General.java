@@ -10,8 +10,8 @@ public class General extends Human {
     private SmallArm pistol;
     private List<Officer> division;
 
-    public General(String firstName, String lastName, int age, int militaryBadge) {
-        super(firstName, lastName, age, militaryBadge);
+    public General(String firstName, String lastName, int militaryBadge) {
+        super(firstName, lastName, militaryBadge);
     }
 
     public long getId() {
