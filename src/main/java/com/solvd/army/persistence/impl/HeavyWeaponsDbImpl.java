@@ -4,10 +4,7 @@ import com.solvd.army.domain.weapon.HeavyWeapon;
 import com.solvd.army.persistence.HeavyWeaponsRepository;
 import com.solvd.army.persistence.Search;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -102,10 +99,14 @@ public class HeavyWeaponsDbImpl extends Search implements HeavyWeaponsRepository
     public void insert(HeavyWeapon meaning) {
         Connection connection = CONNECTION_POOL.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("insert into heavy_weapons(name, number) values (?, ?)");
+            PreparedStatement statement = connection.prepareStatement("insert into heavy_weapons(name, number) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, meaning.getName());
             statement.setLong(2, meaning.getNumber());
             statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            while (resultSet.next()){
+                meaning.setId(resultSet.getLong(1));
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

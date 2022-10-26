@@ -7,10 +7,7 @@ import com.solvd.army.persistence.ArmyRepository;
 import com.solvd.army.persistence.GeneralsRepository;
 import com.solvd.army.persistence.Search;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -115,9 +112,13 @@ public class ArmyDbImpl extends Search implements ArmyRepository {
     public void insert(Army meaning) {
         Connection connection = CONNECTION_POOL.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("insert into armies(number) values (?)");
+            PreparedStatement statement = connection.prepareStatement("insert into armies(number) values (?)", Statement.RETURN_GENERATED_KEYS);
             statement.setLong(1, meaning.getNumber());
             statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            while (resultSet.next()){
+                meaning.setId(resultSet.getLong(1));
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

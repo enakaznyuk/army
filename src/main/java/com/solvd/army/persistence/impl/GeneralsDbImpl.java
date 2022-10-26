@@ -7,10 +7,7 @@ import com.solvd.army.domain.staff.Officer;
 import com.solvd.army.domain.weapon.SmallArm;
 import com.solvd.army.persistence.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -87,7 +84,6 @@ public class GeneralsDbImpl extends Search implements GeneralsRepository {
             }
             general.setDivision(officers);
 
-
             optional = Optional.of(general);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -127,18 +123,22 @@ public class GeneralsDbImpl extends Search implements GeneralsRepository {
     }
 
     @Override
-    public void insert(General meaning, Army id) {
+    public void insert(General meaning, Long id) {
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement("insert into generals(army_id, small_arm_id, " +
                     "first_name, last_name, military_badge) " +
-                    "values(?, ?, ?, ?, ?)");
-            statement.setLong(1, id.getId());
+                    "values(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            statement.setLong(1, id);
             statement.setLong(2, meaning.getPistol().getId());
             statement.setString(3, meaning.getFirstName());
             statement.setString(4, meaning.getLastName());
             statement.setInt(5, meaning.getMilitaryBadge());
             statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            while (resultSet.next()){
+                meaning.setId(resultSet.getLong(1));
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

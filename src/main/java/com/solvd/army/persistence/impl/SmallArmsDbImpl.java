@@ -99,10 +99,15 @@ public class SmallArmsDbImpl extends Search implements SmallArmsRepository {
     public void insert(SmallArm smallArm) {
         Connection connection = CONNECTION_POOL.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("insert into small_arms(name, number) values (?, ?)");
+            PreparedStatement statement = connection.prepareStatement("insert into small_arms(name, number) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, smallArm.getName());
             statement.setInt(2, smallArm.getNumber());
+
             statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            while (resultSet.next()){
+                smallArm.setId(resultSet.getLong(1));
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

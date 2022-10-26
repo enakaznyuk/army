@@ -13,6 +13,7 @@ public abstract class Search {
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(str);
+            statement.close();
             return statement.executeQuery();
         } catch (SQLException e) {
             throw new RuntimeException(e);

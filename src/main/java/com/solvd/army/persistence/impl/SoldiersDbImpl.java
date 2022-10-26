@@ -1,6 +1,7 @@
 package com.solvd.army.persistence.impl;
 
 import com.solvd.army.domain.exception.EntityNotFoundException;
+import com.solvd.army.domain.staff.General;
 import com.solvd.army.domain.staff.Officer;
 import com.solvd.army.domain.staff.Soldier;
 import com.solvd.army.domain.weapon.SmallArm;
@@ -9,9 +10,8 @@ import com.solvd.army.persistence.SmallArmsRepository;
 import com.solvd.army.persistence.SoldiersRepository;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Date;
+import java.util.*;
 
 import static com.solvd.army.persistence.ConnectionPool.CONNECTION_POOL;
 
@@ -67,6 +67,68 @@ public class SoldiersDbImpl extends Search implements SoldiersRepository {
                 return Optional.empty();
             }
 
+            ///////////////////////////////////////
+
+            Map<General, Officer> proba = new HashMap<>();
+            General general;
+            Officer officer;
+            SmallArm smallArm = new SmallArm();
+
+            /*while (resultSet.next()) {
+                if (id == resultSet.getLong(1)) {
+                    String name = resultSet.getString(2);
+                    String lastName = resultSet.getString(3);
+                    int military_badge = resultSet.getInt(4);
+                    long smallArmId = resultSet.getLong(5);
+                    String smallArmName = resultSet.getString(6);
+                    int smallArmNumber = resultSet.getInt(7);
+                    general = new General(name, lastName, military_badge);
+                    smallArm.setId(smallArmId);
+                    smallArm.setName(smallArmName);
+                    smallArm.setNumber(smallArmNumber);
+                    general.setPistol(smallArm);
+
+                    long officerId = resultSet.getLong(8);
+                    String nameOfficer = resultSet.getString(9);
+                    String lastNameOfficer = resultSet.getString(10);
+                    int militaryBadgeOfficer = resultSet.getInt(11);
+                    long smallArmIdOfficer = resultSet.getLong(12);
+                    officer = new Officer(nameOfficer, lastNameOfficer, militaryBadgeOfficer);
+                }
+            }
+
+            String trigger = "";
+            while (resultSet.next()) {
+                if (id == resultSet.getLong(1)) {
+                    if (!trigger.equals(resultSet.getString(2))){
+                        String name = resultSet.getString(2);
+                        String lastName = resultSet.getString(3);
+                        int military_badge = resultSet.getInt(4);
+                        long smallArmId = resultSet.getLong(5);
+                        String smallArmName = resultSet.getString(6);
+                        int smallArmNumber = resultSet.getInt(7);
+                        general = new General(name, lastName, military_badge);
+                        smallArm.setId(smallArmId);
+                        smallArm.setName(smallArmName);
+                        smallArm.setNumber(smallArmNumber);
+                        general.setPistol(smallArm);
+                        trigger = name;
+                    }
+                    long officerId = resultSet.getLong(8);
+                    String nameOfficer = resultSet.getString(9);
+                    String lastNameOfficer = resultSet.getString(10);
+                    int militaryBadgeOfficer = resultSet.getInt(11);
+                    long smallArmIdOfficer = resultSet.getLong(12);
+                    officer = new Officer(nameOfficer, lastNameOfficer, militaryBadgeOfficer);
+
+                }
+            }*/
+
+
+
+
+            //////////////////////////////////////////
+
             Soldier soldier;
             Long idBd = resultSet.getLong(1);
             String name = resultSet.getString(2);
@@ -118,19 +180,23 @@ public class SoldiersDbImpl extends Search implements SoldiersRepository {
     }
 
     @Override
-    public void insert(Soldier meaning, Officer id) {
+    public void insert(Soldier meaning, Long id) {
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement("insert into soldiers(officer_id, small_arm_id, " +
                     "first_name, last_name, demobilization, military_badge) " +
-                    "values(?, ?, ?, ?, ?, ?)");
-            statement.setLong(1, id.getId());
+                    "values(?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            statement.setLong(1, id);
             statement.setLong(2, meaning.getRifle().getId());
             statement.setString(3, meaning.getFirstName());
             statement.setString(4, meaning.getLastName());
             statement.setDate(5, Date.valueOf(meaning.getDemobilization()));
             statement.setInt(6, meaning.getMilitaryBadge());
             statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            while (resultSet.next()) {
+                meaning.setId(resultSet.getLong(1));
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

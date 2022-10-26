@@ -7,60 +7,32 @@ import java.util.Properties;
 public class GetProperty {
 
     public static String getDriver(){
-        try {
-            FileInputStream str;
-            Properties properties = new Properties();
-            str = new FileInputStream("./src/main/resources/config.properties");
-            properties.load(str);
-            return properties.getProperty("driver");
-        } catch (IOException e){
-            throw new RuntimeException(e);
-        }
+        return getFile("driver");
     }
 
     public static String getUrl(){
-        try {
-            FileInputStream str;
-            Properties properties = new Properties();
-            str = new FileInputStream("./src/main/resources/config.properties");
-            properties.load(str);
-            return properties.getProperty("url");
-        } catch (IOException e){
-            throw new RuntimeException(e);
-        }
+        return getFile("url");
     }
 
     public static String getUsername(){
-        try {
-            FileInputStream str;
-            Properties properties = new Properties();
-            str = new FileInputStream("./src/main/resources/config.properties");
-            properties.load(str);
-            return properties.getProperty("username");
-        } catch (IOException e){
-            throw new RuntimeException(e);
-        }
+        return getFile("username");
     }
 
     public static String getPassword(){
-        try {
-            FileInputStream str;
-            Properties properties = new Properties();
-            str = new FileInputStream("./src/main/resources/config.properties");
-            properties.load(str);
-            return properties.getProperty("password");
-        } catch (IOException e){
-            throw new RuntimeException(e);
-        }
+        return getFile("password");
     }
 
     public static Integer getPOOL_SIZE(){
+        return Integer.valueOf(getFile("POOL_SIZE"));
+    }
+
+    private static String getFile(String str){
         try {
-            FileInputStream str;
+            FileInputStream fileInputStream;
             Properties properties = new Properties();
-            str = new FileInputStream("./src/main/resources/config.properties");
-            properties.load(str);
-            return Integer.valueOf(properties.getProperty("POOL_SIZE"));
+            fileInputStream = new FileInputStream("./src/main/resources/config.properties");
+            properties.load(fileInputStream);
+            return properties.getProperty(str);
         } catch (IOException e){
             throw new RuntimeException(e);
         }

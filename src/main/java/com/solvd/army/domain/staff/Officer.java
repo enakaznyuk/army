@@ -2,13 +2,14 @@ package com.solvd.army.domain.staff;
 
 import com.solvd.army.domain.weapon.SmallArm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Officer extends Human {
 
     private long id;
     private SmallArm rifle;
-    private List<Soldier> battalion;
+    private List<Soldier> battalion = new ArrayList<>();
 
     public Officer(String firstName, String lastName, int militaryBadge) {
         super(firstName, lastName, militaryBadge);
@@ -38,6 +39,8 @@ public class Officer extends Human {
         this.battalion = battalion;
     }
 
+
+
     @Override
     public String toString() {
         return "Officer{" +
@@ -45,5 +48,9 @@ public class Officer extends Human {
                 ", rifle=" + rifle +
                 ", battalion=" + battalion +
                 '}';
+    }
+
+    public void addSoldier(Soldier soldierProba) {
+        battalion.add(soldierProba);
     }
 }

@@ -3,7 +3,7 @@ package com.solvd.army.persistence;
 import java.util.List;
 import java.util.Optional;
 
-public interface NewArmyRepository<T, E> {
+public interface NewArmyRepository<T> {
 
     List<T> findAll();
 
@@ -13,6 +13,6 @@ public interface NewArmyRepository<T, E> {
 
     void deleteById(Long id);
 
-    void insert(T meaning, E id);
+    void insert(T meaning, Long id);
 
 }
