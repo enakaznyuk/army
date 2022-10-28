@@ -5,8 +5,11 @@ import com.solvd.army.domain.staff.General;
 import com.solvd.army.domain.staff.Officer;
 import com.solvd.army.domain.staff.Soldier;
 import com.solvd.army.domain.weapon.SmallArm;
+import com.solvd.army.service.OfficerMapService;
+import com.solvd.army.service.impl.OfficerMapServiceImpl;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Main {
 
@@ -37,5 +40,8 @@ public class Main {
         Army army = new Army();
         army.setNumber(30);
         army.setId(7L);
+
+        OfficerMapService service = new OfficerMapServiceImpl();
+        List<Officer> officerList = service.findAll();
     }
 }
