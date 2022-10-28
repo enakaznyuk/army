@@ -10,10 +10,13 @@ public class Officer extends Human {
     private long id;
     private SmallArm rifle;
     private List<Soldier> battalion = new ArrayList<>();
+    private Long generalId;
 
     public Officer(String firstName, String lastName, int militaryBadge) {
         super(firstName, lastName, militaryBadge);
     }
+
+    public Officer(){}
 
     public long getId() {
         return id;
@@ -39,7 +42,13 @@ public class Officer extends Human {
         this.battalion = battalion;
     }
 
+    public Long getGeneralId() {
+        return generalId;
+    }
 
+    public void setGeneralId(Long generalId) {
+        this.generalId = generalId;
+    }
 
     @Override
     public String toString() {

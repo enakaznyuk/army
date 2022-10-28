@@ -12,6 +12,8 @@ public abstract class Human {
         this.militaryBadge = militaryBadge;
     }
 
+    public Human(){}
+
     public String getFirstName() {
         return firstName;
     }

@@ -9,10 +9,13 @@ public class General extends Human {
     private long id;
     private SmallArm pistol;
     private List<Officer> division;
+    private Long armyId;
 
     public General(String firstName, String lastName, int militaryBadge) {
         super(firstName, lastName, militaryBadge);
     }
+
+    public General(){}
 
     public long getId() {
         return id;
@@ -36,6 +39,14 @@ public class General extends Human {
 
     public void setDivision(List<Officer> division) {
         this.division = division;
+    }
+
+    public Long getArmyId() {
+        return armyId;
+    }
+
+    public void setArmyId(Long armyId) {
+        this.armyId = armyId;
     }
 
     @Override

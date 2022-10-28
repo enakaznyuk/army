@@ -14,9 +14,14 @@ public class Soldier  extends Human{
     private HeavyWeapon heavyWeapon;
     private LocalDate demobilization;
     private List<Reward> rewards;
+    private Long officerId;
 
     public Soldier(String firstName, String lastName, int militaryBadge){
         super(firstName, lastName, militaryBadge);
+    }
+
+    public Soldier(){
+        super();
     }
 
     public Long getId() {
@@ -57,6 +62,14 @@ public class Soldier  extends Human{
 
     public void setRewards(List<Reward> rewards) {
         this.rewards = rewards;
+    }
+
+    public Long getOfficerId() {
+        return officerId;
+    }
+
+    public void setOfficerId(Long officerId) {
+        this.officerId = officerId;
     }
 
     @Override

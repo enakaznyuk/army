@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.army.persistence.SoldierMapper">
+
+    <sql id="fields">
+        s.id as soldier_id,
+        s.first_name as soldier_name,
+        s.last_name as soldier_last_name,
+        s.military_badge as soldier_military_badge,
+        s.demobilization as soldier_demobilization
+    </sql>
+
+    <sql id="joins">
+        left join small_arms sm on s.small_arm_id = sm.id
+    </sql>
+
+    <sql id="findAll">
+        select
+        <include refid="fields"/>,
+        <include refid="com.solvd.army.persistence.SmallArmMapper.fields"/>
+        from soldiers s
+        <include refid="joins"/>
+    </sql>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into soldiers (officer_id,first_name, last_name, military_badge, demobilization, small_arm_id)
+        values (#{officerId}, #{firstName}, #{lastName}, #{militaryBadge}, #{demobilization}, #{rifle.id});
+    </insert>
+
+    <delete id="deleteById">
+        delete from soldiers where id = #{id};
+    </delete>
+
+    <update id="update">
+        update soldiers set
+        first_name = #{firstName},
+        last_name = #{lastName},
+        military_badge = #{militaryBadge},
+        demobilization = #{demobilization},
+        small_arm_id = #{rifle.id}
+        where id = #{id};
+    </update>
+
+    <select id="findAll" resultMap="SoldierResultMap">
+        <include refid="findAll"/>
+    </select>
+
+    <select id="findById" resultMap="SoldierResultMap">
+        <include refid="findAll"/>
+        where s.id = #{id};
+    </select>
+
+    <resultMap id="SoldierResultMap" type="com.solvd.army.domain.staff.Soldier" autoMapping="false">
+        <id property="id" column="soldier_id"/>
+        <result property="firstName" column="soldier_name"/>
+        <result property="lastName" column="soldier_last_name"/>
+        <result property="militaryBadge" column="soldier_military_badge"/>
+        <result property="demobilization" column="soldier_demobilization"/>
+        <association property="rifle"
+                     resultMap="com.solvd.army.persistence.SmallArmMapper.SmallArmResultMap"/>
+    </resultMap>
+
+</mapper>

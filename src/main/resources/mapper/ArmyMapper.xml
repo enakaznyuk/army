@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.army.persistence.ArmyMapper">
+
+    <sql id="fields">
+        g.id as officer_id,
+        g.first_name as officer_name,
+        g.last_name as officer_last_name,
+        g.military_badge as officer_military_badge,
+    </sql>
+
+    <sql id="joins">
+        left join small_arms s on o.small_arm_id = s.id
+    </sql>
+
+    <sql id="findAll">
+        select  a.id as army_id, a.number as army_number,
+        g.id as general_id, g.first_name as general_name, g.last_name as general_last_name, g.military_badge as general_military_badge,
+        sa.id as small_arm_id, sa.name as small_arm_name, sa.number as small_arm_number,
+        o.id as officers_id, o.first_name as first_name, o.last_name as last_name, o.military_badge as military_badge,
+        s.id as small_arm_id, s.name as small_arm_name, s.number as small_arm_number,
+        ss.id as soldier_id, ss.first_name as soldier_name, ss.last_name as soldier_last_name, ss.military_badge as soldier_military_badge, ss.demobilization as soldier_demobilization,
+        sm.id as small_arm_id, sm.name as small_arm_name, sm.number as small_arm_number
+        from armies a left join generals g on g.army_id = a.id
+        left join small_arms sa on g.small_arm_id = sa.id
+        left join officers o on g.id = o.general_id
+        left join small_arms s on o.small_arm_id = s.id
+        left join soldiers ss on ss.officer_id = o.id
+        left join small_arms sm on ss.small_arm_id = sm.id
+    </sql>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into armies (number)
+        values (#{number});
+    </insert>
+
+    <delete id="deleteById">
+        delete from armies where id = #{id};
+    </delete>
+
+    <update id="update">
+        update armies set
+        number = #{number}
+        where id = #{id};
+    </update>
+
+    <select id="findAll" resultMap="ArmyResultMap">
+        <include refid="findAll"/>
+    </select>
+
+    <select id="findById" resultMap="ArmyResultMap">
+        <include refid="findAll"/>
+        where s.id = #{id};
+    </select>
+
+    <resultMap id="ArmyResultMap" type="com.solvd.army.domain.Army" autoMapping="false">
+        <id property="id" column="army_id"/>
+        <result property="number" column="army_number"/>
+        <association property="general"
+                     resultMap="com.solvd.army.persistence.GeneralMapper.GeneralResultMap"/>
+    </resultMap>
+
+</mapper>

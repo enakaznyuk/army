@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.army.persistence.OfficerMapper">
+
+    <sql id="fields">
+        o.id as officer_id,
+        o.first_name as officer_name,
+        o.last_name as officer_last_name,
+        o.military_badge as officer_military_badge,
+    </sql>
+
+    <sql id="joins">
+        left join small_arms s on o.small_arm_id = s.id
+    </sql>
+
+    <sql id="findAll">
+        select o.id as officers_id, o.first_name as first_name, o.last_name as last_name, o.military_badge as military_badge,
+        s.id as small_arm_id, s.name as small_arm_name, s.number as small_arm_number,
+        ss.id as soldier_id, ss.first_name as soldier_name, ss.last_name as soldier_last_name, ss.military_badge as soldier_military_badge, ss.demobilization as soldier_demobilization,
+        sm.id as small_arm_id, sm.name as small_arm_name, sm.number as small_arm_number
+        from officers o left join small_arms s on o.small_arm_id = s.id
+        left join soldiers ss on ss.officer_id = o.id
+        left join small_arms sm on ss.small_arm_id = sm.id
+    </sql>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into officers (general_id, first_name, last_name, military_badge, small_arm_id)
+        values (#{generalId}, #{firstName}, #{lastName}, #{militaryBadge}, #{rifle.id});
+    </insert>
+
+    <delete id="deleteById">
+        delete from officers where id = #{id};
+    </delete>
+
+    <update id="update">
+        update officers set
+        first_name = #{firstName},
+        last_name = #{lastName},
+        military_badge = #{militaryBadge},
+        small_arm_id = #{rifle.id}
+        where id = #{id};
+    </update>
+
+    <select id="findAll" resultMap="OfficerResultMap">
+        <include refid="findAll"/>
+    </select>
+
+    <select id="findById" resultMap="OfficerResultMap">
+        <include refid="findAll"/>
+        where s.id = #{id};
+    </select>
+
+    <resultMap id="OfficerResultMap" type="com.solvd.army.domain.staff.Officer" autoMapping="false">
+        <id property="id" column="officers_id"/>
+        <result property="firstName" column="first_name"/>
+        <result property="lastName" column="last_name"/>
+        <result property="militaryBadge" column="military_badge"/>
+        <association property="rifle"
+                     resultMap="com.solvd.army.persistence.SmallArmMapper.SmallArmResultMap"/>
+        <collection property="battalion"
+                    resultMap="com.solvd.army.persistence.SoldierMapper.SoldierResultMap"/>
+    </resultMap>
+
+</mapper>

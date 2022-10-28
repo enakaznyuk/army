@@ -1,26 +1,41 @@
 package com.solvd.army;
 
-
+import com.solvd.army.domain.Army;
+import com.solvd.army.domain.staff.General;
 import com.solvd.army.domain.staff.Officer;
 import com.solvd.army.domain.staff.Soldier;
 import com.solvd.army.domain.weapon.SmallArm;
-import com.solvd.army.service.OfficersService;
-import com.solvd.army.service.SmallArmsService;
-import com.solvd.army.service.SoldiersService;
-import com.solvd.army.service.impl.OfficersServiceImpl;
-import com.solvd.army.service.impl.SmallArmsServiceImpl;
-import com.solvd.army.service.impl.SoldiersServiceImpl;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-        
 
-        OfficersService service = new OfficersServiceImpl();
-        List<Officer> officer = service.findAll();
-        System.out.println(officer);
+
+        SmallArm smallArm = new SmallArm();
+        smallArm.setName("luch smerty");
+        smallArm.setNumber(2023);
+        smallArm.setId(42L);
+
+        Soldier soldier = new Soldier("987","654", 321);
+        soldier.setDemobilization(LocalDate.now());
+        soldier.setRifle(smallArm);
+        soldier.setOfficerId(6L);
+        soldier.setId(23L);
+
+        Officer officer = new Officer("hallo","hello", 777);
+        officer.setRifle(smallArm);
+        officer.setGeneralId(1L);
+        officer.setId(8L);
+
+        General general = new General("conichiva","conichiva", 212);
+        general.setPistol(smallArm);
+        general.setArmyId(1L);
+        general.setId(2L);
+
+        Army army = new Army();
+        army.setNumber(30);
+        army.setId(7L);
     }
 }
