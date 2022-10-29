@@ -57,4 +57,16 @@ public class General extends Human {
                 ", division=" + division +
                 '}';
     }
+
+    @Override
+    public void charger() {
+        //super.charger();
+        System.out.println("makes standards for the general");
+    }
+
+    @Override
+    public void serve() {
+        //super.serve();
+        System.out.println("performs tasks according to the rank of general");
+    }
 }

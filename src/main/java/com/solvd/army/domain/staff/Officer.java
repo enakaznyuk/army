@@ -1,11 +1,12 @@
 package com.solvd.army.domain.staff;
 
+import com.solvd.army.domain.equipment.Plane;
 import com.solvd.army.domain.weapon.SmallArm;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Officer extends Human {
+public class Officer extends Human implements IEvent {
 
     private long id;
     private SmallArm rifle;
@@ -61,5 +62,22 @@ public class Officer extends Human {
 
     public void addSoldier(Soldier soldierProba) {
         battalion.add(soldierProba);
+    }
+
+    @Override
+    public void charger() {
+        super.charger();
+        System.out.println("makes standards for the officer");
+    }
+
+    @Override
+    public void serve() {
+        super.serve();
+        System.out.println("performs tasks according to the rank of officer");
+    }
+
+    @Override
+    public void newPlane(Plane plane) {
+        System.out.println("you are assigned to a new plane id = " + plane.getId());
     }
 }

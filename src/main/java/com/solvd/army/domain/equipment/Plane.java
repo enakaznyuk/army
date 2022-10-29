@@ -26,4 +26,5 @@ public class Plane extends Equipment {
     public void setOfficer(Officer officer) {
         this.officer = officer;
     }
+
 }

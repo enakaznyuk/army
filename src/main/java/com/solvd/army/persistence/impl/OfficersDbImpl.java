@@ -22,6 +22,13 @@ public class OfficersDbImpl extends Search implements OfficersRepository {
             "left join soldiers ss on ss.officer_id = o.id\n" +
             "left join small_arms sm on ss.small_arm_id = sm.id");
 
+    /*
+    * в Методах findAll и findById я использовал паттерн Facade, о котором при создании данного кода и не знал.
+    * Данный код прячет реализацию методов за фасадом, конкретно тут я спрятал реализацию метода
+    * parseDataBaseResult и сделал сам метод приватным.
+    * пользователь программы не сможет сам обратиться к данному методы, но при этом при вызове
+    * findAll и findById невольно и неявно будет его использовать.
+    * */
     @Override
     public List<Officer> findAll() {
         List<Officer> officers = new ArrayList<>();
