@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+
+
+
+
+<suite name="Verify soldier logic" parallel="methods" thread-count="5" data-provider-thread-count="3">
+    <test name="Test Basics 1">
+        <classes>
+            <class name="com.solvd.army.SoldierTest"/>
+        </classes>
+    </test>
+
+    <test name="Test Basics 2">
+        <classes>
+            <class name="com.solvd.army.OfficerTest"/>
+        </classes>
+    </test>
+
+    <test name="Test Basics 3">
+        <classes>
+            <class name="com.solvd.army.GeneralTest"/>
+        </classes>
+    </test>
+
+    <test name="Test Basics 4">
+        <classes>
+            <class name="com.solvd.army.SmallArmTest"/>
+        </classes>
+    </test>
+
+    <test name="Test Basics 5">
+        <classes>
+            <class name="com.solvd.army.GeneralTest"/>
+            <class name="com.solvd.army.OfficerTest"/>
+            <class name="com.solvd.army.SoldierTest"/>
+        </classes>
+    </test>
+
+    <test name="Test Basics 6">
+        <classes>
+            <class name="com.solvd.army.SmallArmTest">
+                <methods>
+                    <include name="verifySmallArmIsNotEmptyTest"/>
+                </methods>
+            </class>
+            <class name="com.solvd.army.SoldierTest">
+                <methods>
+                    <include name="verifySoldiersListIsNotEmptyTest"/>
+                    <include name="verifySmallArmIsNotEmptyTest"/>
+                    <exclude name="verifySoldierNotEmptyTest"/>
+                </methods>
+            </class>
+            <class name="com.solvd.army.OfficerTest">
+                <methods>
+                    <include name="verifySoldiersListIsNotEmptyInOfficerTest"/>
+                    <exclude name="verifyOfficerFirstNameErrorMassageTest"/>
+                    <exclude name="verifySverifyOfficersListIsNotEmptyTestoldierNotEmptyTest"/>
+                </methods>
+            </class>
+            <class name="com.solvd.army.GeneralTest">
+            </class>
+        </classes>
+    </test>
+</suite>
